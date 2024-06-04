@@ -1,0 +1,150 @@
+
+public class TreeNode {
+    int value;
+    TreeNode left;
+    TreeNode right;
+    public TreeNode(int value) {
+        this.value = value;
+        left = null;
+        right = null;
+    }
+    public int getValue() {
+        return value;
+    }
+    public void setValue(int value) {
+        this.value = value;
+    }
+    public TreeNode getLeft() {
+        return left;
+    }
+    public void setLeft(TreeNode left) {
+        this.left = left;
+    }
+    public TreeNode getRight() {
+        return right;
+    }
+    public void setRight(TreeNode right) {
+        this.right = right;
+    }
+}
+public class BinaryTree {
+    private TreeNode root;
+    public BinaryTree() {
+        root = null;
+    }
+    // Метод для добавления нового узла в дерево
+    public void add(int value) {
+        root = addRecursive(root, value);
+    }
+    private TreeNode addRecursive(TreeNode current, int value) {
+        if (current == null) {
+            return new TreeNode(value);
+        }
+        if (value < current.getValue()) {
+            current.setLeft(addRecursive(current.getLeft(), value));
+        } else if (value > current.getValue()) {
+            current.setRight(addRecursive(current.getRight(), value));
+        }
+        return current;
+    }
+    // Метод для поиска узла в дереве
+    public boolean containsNode(int value) {
+        return containsNodeRecursive(root, value);
+    }
+    private boolean containsNodeRecursive(TreeNode current, int value) {
+        if (current == null) {
+            return false;
+        }
+        if (value == current.getValue()) {
+            return true;
+        }
+        return value < current.getValue()
+                ? containsNodeRecursive(current.getLeft(), value)
+                : containsNodeRecursive(current.getRight(), value);
+    }
+    // Метод для удаления узла из дерева
+    public void delete(int value) {
+        root = deleteRecursive(root, value);
+    }
+    private TreeNode deleteRecursive(TreeNode current, int value) {
+        if (current == null) {
+            return null;
+        }
+        if (value == current.getValue()) {
+            // Node to delete found
+            if (current.getLeft() == null && current.getRight() == null) {
+                return null;
+            }
+            if (current.getRight() == null) {
+                return current.getLeft();
+            }
+            if (current.getLeft() == null) {
+                return current.getRight();
+            }
+            int smallestValue = findSmallestValue(current.getRight());
+            current.setValue(smallestValue);
+            current.setRight(deleteRecursive(current.getRight(), smallestValue));
+            return current;
+        }
+        if (value < current.getValue()) {
+            current.setLeft(deleteRecursive(current.getLeft(), value));
+            return current;
+        }
+        current.setRight(deleteRecursive(current.getRight(), value));
+        return current;
+    }
+    private int findSmallestValue(TreeNode root) {
+        return root.getLeft() == null ? root.getValue() : findSmallestValue(root.getLeft());
+    }
+    // Метод для обхода дерева в прямом порядке
+    public void traverseInOrder(TreeNode node) {
+        if (node != null) {
+            traverseInOrder(node.getLeft());
+            System.out.print(" " + node.getValue());
+            traverseInOrder(node.getRight());
+        }
+    }
+    // Метод для обхода дерева в порядке следования
+    public void traversePreOrder(TreeNode node) {
+        if (node != null) {
+            System.out.print(" " + node.getValue());
+            traversePreOrder(node.getLeft());
+            traversePreOrder(node.getRight());
+        }
+    }
+    // Метод для обхода дерева в обратном порядке
+    public void traversePostOrder(TreeNode node) {
+        if (node != null) {
+            traversePostOrder(node.getLeft());
+            traversePostOrder(node.getRight());
+            System.out.print(" " + node.getValue());
+        }
+    }
+    // Метод для получения корня дерева
+    public TreeNode getRoot() {
+        return root;
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        BinaryTree bt = new BinaryTree();
+        bt.add(6);
+        bt.add(4);
+        bt.add(8);
+        bt.add(3);
+        bt.add(5);
+        bt.add(7);
+        bt.add(9);
+        System.out.println("In Order Traversal:");
+        bt.traverseInOrder(bt.getRoot());
+        System.out.println("\nPre Order Traversal:");
+        bt.traversePreOrder(bt.getRoot());
+        System.out.println("\nPost Order Traversal:");
+        bt.traversePostOrder(bt.getRoot());
+        System.out.println("\n\nContains 5: " + bt.containsNode(5));
+        System.out.println("Contains 1: " + bt.containsNode(1));
+        bt.delete(5);
+        System.out.println("\nIn Order Traversal after deleting 5:");
+        bt.traverseInOrder(bt.getRoot());
+    }
+}
