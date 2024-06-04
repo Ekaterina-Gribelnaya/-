@@ -1,0 +1,111 @@
+public class MyNode<T> {
+    T value;
+    MyNode<T> next;
+    public MyNode(T value) {
+        this.value = value;
+        this.next = null;
+    }
+    public T getValue() {
+        return value;
+    }
+    public void setValue(T value) {
+        this.value = value;
+    }
+    public MyNode<T> getNext() {
+        return next;
+    }
+    public void setNext(MyNode<T> next) {
+        this.next = next;
+    }
+}
+public class MySet<T> {
+    private MyNode<T> head;
+    public MySet() {
+        this.head = null;
+    }
+    // Метод для добавления элемента в множество
+    public void add(T value) {
+        if (!contains(value)) {
+            MyNode<T> newNode = new MyNode<>(value);
+            newNode.setNext(head);
+            head = newNode;
+        }
+    }
+    // Метод для удаления элемента из множества
+    public void remove(T value) {
+        if (head == null) {
+            return;
+        }
+        if (head.getValue().equals(value)) {
+            head = head.getNext();
+            return;
+        }
+        MyNode<T> current = head;
+        while (current.getNext() != null) {
+            if (current.getNext().getValue().equals(value)) {
+                current.setNext(current.getNext().getNext());
+                return;
+            }
+            current = current.getNext();
+        }
+    }
+    // Метод для проверки наличия элемента в множестве
+    public boolean contains(T value) {
+        MyNode<T> current = head;
+        while (current != null) {
+            if (current.getValue().equals(value)) {
+                return true;
+            }
+            current = current.getNext();
+        }
+        return false;
+    }
+    // Метод для получения размера множества
+    public int size() {
+        int size = 0;
+        MyNode<T> current = head;
+        while (current != null) {
+            size++;
+            current = current.getNext();
+        }
+        return size;
+    }
+    // Метод для проверки, является ли множество пустым
+    public boolean isEmpty() {
+        return head == null;
+    }
+    // Метод для очистки множества
+    public void clear() {
+        head = null;
+    }
+    // Метод для вывода элементов множества
+    public void printSet() {
+        MyNode<T> current = head;
+        while (current != null) {
+            System.out.print(current.getValue() + " ");
+            current = current.getNext();
+        }
+        System.out.println();
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        MySet<Integer> set = new MySet<>();
+        set.add(1);
+        set.add(2);
+        set.add(3);
+        set.add(2); // Дубликат, не будет добавлен
+        System.out.println("Set contains 2: " + set.contains(2));
+        System.out.println("Set contains 4: " + set.contains(4));
+        System.out.print("Set elements: ");
+        set.printSet();
+        set.remove(2);
+        System.out.println("After removing 2:");
+        set.printSet();
+        System.out.println("Set size: " + set.size());
+        set.clear();
+        System.out.println("After clearing:");
+        set.printSet();
+        System.out.println("Is set empty: " + set.isEmpty());
+    }
+}
