@@ -1,0 +1,32 @@
+class Engine {
+    private int power;
+
+    public Engine(int power) {
+        this.power = power;
+    }
+
+    public void start() {
+        System.out.println("Engine with power " + power + " started.");
+    }
+}
+
+class Car {
+    private Engine engine;
+
+    public Car() {
+        this.engine = new Engine(360); // Двигатель создается вместе с автомобилем
+    }
+
+    public void start() {
+        engine.start();
+        System.out.println("Car started.");
+    }
+}
+
+// Тестирование
+public class Main {
+    public static void main(String[] args) {
+        Car car = new Car();
+        car.start();
+    }
+}
