@@ -1,0 +1,39 @@
+// Базовый класс
+class Animal {
+    void sound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+// Дочерний класс
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+// Дочерний класс
+class Cat extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Cat meows");
+    }
+}
+
+// Главный класс для тестирования
+public class Main {
+    public static void main(String[] args) {
+        Animal myDog = new Dog(); // Полиморфизм
+        Animal myCat = new Cat(); // Полиморфизм
+
+        myDog.sound(); // Вывод: Dog barks
+        myCat.sound(); // Вывод: Cat meows
+
+        // Использование массива животных
+        Animal[] animals = {myDog, myCat};
+        for (Animal animal : animals) {
+            animal.sound(); // Полиморфный вызов метода
+        }
+    }
+}
