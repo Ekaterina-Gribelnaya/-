@@ -1,0 +1,93 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Calculator extends JFrame implements ActionListener {
+    private JTextField display;
+    private String operator;
+    private double firstNumber;
+
+    public Calculator() {
+        // Настройка окна
+        setTitle("Калькулятор");
+        setSize(400, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // Создание текстового поля для отображения
+        display = new JTextField();
+        display.setEditable(false);
+        display.setFont(new Font("Arial", Font.PLAIN, 24));
+        add(display, BorderLayout.NORTH);
+
+        // Создание панели для кнопок
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(4, 4));
+
+        // Создание кнопок
+        String[] buttonLabels = {
+            "7", "8", "9", "/",
+            "4", "5", "6", "*",
+            "1", "2", "3", "-",
+            "0", ".", "=", "+"
+        };
+
+        for (String label : buttonLabels) {
+            JButton button = new JButton(label);
+            button.addActionListener(this);
+            buttonPanel.add(button);
+        }
+
+        add(buttonPanel, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+
+        if ("0123456789.".contains(command)) {
+            // Если нажата цифра или точка
+            display.setText(display.getText() + command);
+        } else if (command.equals("=")) {
+            // Если нажата кнопка "="
+            double secondNumber = Double.parseDouble(display.getText());
+            double result = performOperation(firstNumber, secondNumber, operator);
+            display.setText(String.valueOf(result));
+        } else {
+            // Если нажата операция
+            if (!display.getText().isEmpty()) {
+                firstNumber = Double.parseDouble(display.getText());
+                operator = command;
+                display.setText("");
+            }
+        }
+    }
+
+    private double performOperation(double firstNumber, double secondNumber, String operator) {
+        switch (operator) {
+            case "+":
+                return firstNumber + secondNumber;
+            case "-":
+                return firstNumber - secondNumber;
+            case "*":
+                return firstNumber * secondNumber;
+            case "/":
+                if (secondNumber != 0) {
+                    return firstNumber / secondNumber;
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ошибка: Деление на ноль!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                    return 0;
+                }
+            default:
+                return 0;
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Calculator calculator = new Calculator();
+            calculator.setVisible(true);
+        });
+    }
+}
