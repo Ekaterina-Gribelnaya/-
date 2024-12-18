@@ -1,0 +1,106 @@
+public class Card {
+    private String suit; // Масть карты
+    private String rank; // Ранг карты
+
+    public Card(String suit, String rank) {
+        this.suit = suit;
+        this.rank = rank;
+    }
+
+    public String getSuit() {
+        return suit;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    @Override
+    public String toString() {
+        return rank + " of " + suit;
+    }
+}
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Deck {
+    private List<Card> cards; // Список карт в колоде
+
+    public Deck() {
+        cards = new ArrayList<>();
+        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
+        String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
+
+        // Создание колоды
+        for (String suit : suits) {
+            for (String rank : ranks) {
+                cards.add(new Card(suit, rank));
+            }
+        }
+    }
+
+    // Метод для перетасовки колоды
+    public void shuffle() {
+        Collections.shuffle(cards);
+    }
+
+    // Метод для сдачи карты
+    public Card dealCard() {
+        if (!cards.isEmpty()) {
+            return cards.remove(cards.size() - 1); // Удаляем последнюю карту из колоды
+        }
+        return null; // Если колода пуста
+    }
+
+    // Метод для возврата карты в колоду
+    public void returnCard(Card card) {
+        if (!cards.contains(card)) { // Проверка на дублирование
+            cards.add(card);
+            System.out.println(card + " возвращена в колоду.");
+        } else {
+            System.out.println(card + " уже есть в колоде.");
+        }
+    }
+
+    // Метод для получения количества оставшихся карт в колоде
+    public int remainingCards() {
+        return cards.size();
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Deck deck = new Deck(); // Создаем новую колоду
+        deck.shuffle(); // Перетасовываем колоду
+
+        // Сдаем несколько карт
+        Card card1 = deck.dealCard();
+        Card card2 = deck.dealCard();
+        
+        System.out.println("Сданные карты: ");
+        System.out.println(card1);
+        System.out.println(card2);
+
+        System.out.println("Осталось карт в колоде: " + deck.remainingCards());
+
+        // Возвращаем карту в колоду
+        deck.returnCard(card1);
+        
+        System.out.println("После возврата карты:");
+        System.out.println("Осталось карт в колоде: " + deck.remainingCards());
+
+        // Попробуем вернуть ту же карту еще раз
+        deck.returnCard(card1);
+        
+        // Сдаем еще одну карту
+        Card card3 = deck.dealCard();
+        
+        System.out.println("Сданная карта: ");
+        System.out.println(card3);
+        
+        System.out.println("Осталось карт в колоде: " + deck.remainingCards());
+        
+        // Возвращаем карту, которая уже есть в колоде
+        deck.returnCard(card2);
+    }
+}
