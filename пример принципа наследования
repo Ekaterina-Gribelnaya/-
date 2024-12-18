@@ -1,0 +1,33 @@
+// Базовый класс
+class Animal {
+    void eat() {
+        System.out.println("This animal eats food.");
+    }
+}
+
+// Дочерний класс
+class Dog extends Animal {
+    void bark() {
+        System.out.println("The dog barks.");
+    }
+}
+
+// Дочерний класс
+class Cat extends Animal {
+    void meow() {
+        System.out.println("The cat meows.");
+    }
+}
+
+// Главный класс для тестирования
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.eat(); // Наследованный метод
+        dog.bark(); // Метод дочернего класса
+
+        Cat cat = new Cat();
+        cat.eat(); // Наследованный метод
+        cat.meow(); // Метод дочернего класса
+    }
+}
